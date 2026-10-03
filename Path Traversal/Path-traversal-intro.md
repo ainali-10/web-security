@@ -26,7 +26,7 @@ The root cause is usually poor input validation and insufficient sanitization.
 
 Developers often assume that a user-provided value is safe, but if that value is used in a file path without checks, attackers can abuse it. In many cases, the application should only allow safe filenames and reject path traversal sequences such as `../`, absolute paths, or other malicious patterns.
 
-A secure version of the code would validate the input and only accept expected file names, not arbitrary path segments.
+A secure version of the code would validate the input and only accept expected file names,not arbitrary path segments.
 
 ## What are the possible effects of the vulnerability?
 
