@@ -52,9 +52,6 @@ This means we need another way to specify the file we want.
 Instead of using `../` to move through directories, I gave the application the absolute path directly.
 
 I intercepted the image request in Caido. Changed the filename parameter to `/etc/passwd`.
-
-<img width="366" height="35" alt="2026-10-04_23-55" src="https://github.com/user-attachments/assets/90025328-6c90-4cb8-b952-0e3e3f9baa68" />
-
 There is no `../` in this payload.
 
 Instead, `/etc/passwd` is a path starting from the filesystem root.
