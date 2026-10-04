@@ -1,3 +1,4 @@
+<img width="1332" height="838" alt="2026-10-04_23-11" src="https://github.com/user-attachments/assets/f0a2e952-ad4f-4c31-a6ca-1402b78cc0ba" />
 # File Path Traversal in Simple Case
 
 ## What I observed
@@ -12,7 +13,7 @@ When we right-click an image and open it in a tab we see that the URL contains a
 
 This shows that the application uses the filename parameter to decide which file to load.
 
-**[Screenshot 1: URL/request with `filename=32.png`]**
+<img width="1332" height="838" alt="2026-10-04_23-11" src="https://github.com/user-attachments/assets/23d93ad6-3db2-4d3f-8a98-bce65eaa4a27" />
 
 Basically somewhere in the backend it could be doing something like:
 
@@ -38,7 +39,7 @@ to:
 
 The application returned an image.
 
-**[Screenshot 2: URL/request with `filename=31.png` showing the image]**
+<img width="1215" height="767" alt="2026-10-04_23-13" src="https://github.com/user-attachments/assets/56f37612-add7-4a2f-ae20-eaffa005db90" />
 
 This confirms that the filename parameter is actually used to access files on the server.
 
@@ -52,7 +53,7 @@ I intercepted the request in Caido. Modified the filename parameter to:
 ../../../etc/passwd
 ```
 
-**[Screenshot 3: Caido request showing `filename=../../../etc/passwd`]**
+<img width="1920" height="983" alt="2026-10-04_23-19" src="https://github.com/user-attachments/assets/bb46debb-3d03-4910-bedf-976b0d4c6da3" />
 
 The final request was basically:
 
@@ -64,7 +65,7 @@ The `../` sequences move up directories from the applications directory until we
 
 The server returned the contents of `/etc/passwd` in the response.
 
-**[Screenshot 4: Caido response showing the `/etc/passwd` contents]**
+<img width="1914" height="807" alt="2026-10-04_23-17" src="https://github.com/user-attachments/assets/ac8ddc7f-793f-489e-8a8a-258cc7ead1a0" />
 
 This confirms that the application is vulnerable to Path Traversal.
 
