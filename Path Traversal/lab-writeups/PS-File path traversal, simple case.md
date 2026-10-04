@@ -1,4 +1,3 @@
-<img width="1332" height="838" alt="2026-10-04_23-11" src="https://github.com/user-attachments/assets/f0a2e952-ad4f-4c31-a6ca-1402b78cc0ba" />
 # File Path Traversal in Simple Case
 
 ## What I observed
@@ -37,7 +36,7 @@ to:
 31.png
 ```
 
-The application returned an image.
+The application returned a different image.
 
 <img width="1215" height="767" alt="2026-10-04_23-13" src="https://github.com/user-attachments/assets/56f37612-add7-4a2f-ae20-eaffa005db90" />
 
