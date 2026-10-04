@@ -3,6 +3,9 @@
 ## What I Observed
 
 Again we have a shopping application that loads product images using a filename parameter.
+  <img width="1726" height="935" alt="2026-10-04_23-19" src="https://github.com/user-attachments/assets/14352eb3-6e8b-40c1-9d4d-a79294f0817f" />
+
+
 
 When I opened one of the product images in a tab I could see the filename in the URL:
 
@@ -10,13 +13,13 @@ When I opened one of the product images in a tab I could see the filename in the
 /image?filename=53.png
 ```
 
-**[Screenshot 1: Original image request showing `filename=53.png`]**
+<img width="1907" height="915" alt="2026-10-04_23-38" src="https://github.com/user-attachments/assets/303fd154-61e8-45f6-8053-471175b96e4f" />
 
 Because the filename is controlled through the URL I wanted to see if changing it would load a different image.
 
 I changed `53.png` to `32.png`. The application returned a different image.
 
-**[Screenshot 2: Changed image request showing `filename=32.png` and the different image]**
+<img width="1912" height="921" alt="2026-10-04_23-39" src="https://github.com/user-attachments/assets/73e7270e-ff8d-4f56-8935-fa0baf012eb0" />
 
 Thus we know that the filename parameter controls which file the application loads.
 
@@ -38,7 +41,7 @@ However, in this lab the application blocks traversal sequences.
 
 So the normal payload does not work.
 
-**[Screenshot 3: Caido request showing the blocked `../../../etc/passwd` attempt]**
+<img width="1892" height="853" alt="2026-10-04_23-41" src="https://github.com/user-attachments/assets/3e87f667-d181-4803-be07-c3d418d74c6c" />
 
 This means we need another way to specify the file we want.
 
@@ -50,7 +53,7 @@ Instead of using `../` to move through directories, I gave the application the a
 
 I intercepted the image request in Caido. Changed the filename parameter to `/etc/passwd`.
 
-**[Screenshot 4: Caido request showing `filename=/etc/passwd`]**
+<img width="366" height="35" alt="2026-10-04_23-55" src="https://github.com/user-attachments/assets/90025328-6c90-4cb8-b952-0e3e3f9baa68" />
 
 There is no `../` in this payload.
 
@@ -58,7 +61,7 @@ Instead, `/etc/passwd` is a path starting from the filesystem root.
 
 The application accepted it and returned the file contents.
 
-**[Screenshot 5: Caido response showing the `/etc/passwd` contents]**
+<img width="1906" height="809" alt="2026-10-04_23-42" src="https://github.com/user-attachments/assets/c11cd18e-b22b-4e3f-8bef-406eed996b89" />
 
 This means that even though the application blocks the traversal sequence, it still allows absolute paths.
 
