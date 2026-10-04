@@ -1,20 +1,18 @@
-# File Path Traversal – Traversal Sequences Stripped Non-Recursively
+# File Path Traversal, Traversal Sequences Stripped Non-Recursively
 
-## Overview
+## What I observed
 
-This lab demonstrates a classic path traversal bypass that works even when a filter is present. The application strips traversal sequences from user input, but because it does so only once, a crafted payload can regenerate a traversal pattern and still reach sensitive files.
+We have the same type of shopping application where product images are loaded using a filename parameter.
 
----
-
-## What I Observed
-
-The application loads product images via a `filename` parameter in the URL:
+I opened one of the product images in a new tab and saw the filename in the URL:
 
 ```text
 /image?filename=72.png
 ```
 
-I changed the parameter from:
+**[Screenshot 1: Original image request showing `filename=72.png`]**
+
+Since the filename is controlled through the URL, I changed:
 
 ```text
 72.png
@@ -26,37 +24,47 @@ to:
 22.png
 ```
 
-and the application returned a different image.
+The application returned a different image.
 
-This confirms that the `filename` parameter is user-controlled and directly influences which file is served.
+**[Screenshot 2: Changed image request showing `filename=22.png` and the different image]**
 
----
+So again, we know that the `filename` parameter is user controlled and is being used to decide which file the application loads.
 
-## Attempting the Standard Payload
+## Trying Path Traversal
 
-Because this is a file path traversal challenge, I first tried the usual payload:
+Since this is a Path Traversal lab, I first tried the normal traversal payload:
 
 ```text
 ../../../etc/passwd
 ```
 
-This did not work.
+But this didn't work.
 
-The reason is that the application strips traversal sequences from the filename before using it. So the input is sanitized before the final file path is resolved.
+The reason is that this application strips traversal sequences from the filename before using it.
 
----
+So if we send:
 
-## Bypassing the Filter
+```text
+../../../etc/passwd
+```
 
-The key detail is that the filter is applied only once.
+the application removes the `../` sequences.
 
-I used this payload:
+This means we need to find a way around the filtering instead of simply using the normal payload.
+
+## Bypassing the filter
+
+The important part here is that the application strips the traversal sequence **non-recursively**.
+
+So I used:
 
 ```text
 ....//....//....//etc/passwd
 ```
 
-The idea is that the application removes the inner traversal sequence while processing the input. The string contains repeated path traversal patterns hidden inside a larger string.
+**[Screenshot 3: Caido request showing `filename=....//....//....//etc/passwd`]**
+
+The idea is that the application removes the inner `../` pattern while processing the input.
 
 For example:
 
@@ -70,53 +78,59 @@ contains:
 ../
 ```
 
-When the application removes that pattern, it reveals another traversal sequence. Because the filter is not recursive, it does not process the modified input again.
+After that sequence is removed, another traversal sequence is exposed:
 
-That means the final file path effectively becomes:
+```text
+../
+```
+
+Because the application only performs the filtering once, it doesn't remove this newly exposed traversal sequence.
+
+So the resulting path effectively becomes:
 
 ```text
 ../../../etc/passwd
 ```
 
-and the application then reads:
-
-```text
-/etc/passwd
-```
-
----
+The application then uses that path to access `/etc/passwd`.
 
 ## Response
 
 The server returned the contents of `/etc/passwd`.
 
-This confirms that the filter can be bypassed even though it removes the obvious `../` traversal sequence from the original input.
+**[Screenshot 4: Caido response showing the `/etc/passwd` contents]**
 
----
+This confirms that the filter could be bypassed even though it was removing the normal `../` traversal sequence.
 
-## Why This Works
+## Why this works
 
-The most important concept here is that the sanitization is performed **non-recursively**.
+The important word here is **non-recursively**.
 
-The application removes a traversal sequence once, but it does not keep checking the modified input for newly exposed sequences.
+The application removes the traversal sequence once, but it doesn't keep checking the modified input.
 
-In other words:
+So:
 
 ```text
 ....//
 ```
 
-contains `../`, so the application removes it:
+contains:
 
 ```text
-....//
-   ↓
 ../
 ```
 
-Now the traversal sequence exists again, but since the application does not run the filter a second time, the bypass succeeds.
+The application removes that part:
 
----
+```text
+....//
+  ↓
+../
+```
+
+Now a traversal sequence exists again, but the application doesn't process the input a second time.
+
+That's why the bypass works.
 
 ## Result
 
@@ -126,19 +140,15 @@ The `/etc/passwd` file was successfully retrieved using:
 ....//....//....//etc/passwd
 ```
 
-This lab was solved.
+The lab was solved.
 
----
+## What I learned
 
-## What I Learned
+This lab showed me that simply having a filter doesn't mean the application is safe.
 
-This lab reinforced an important point: simply having a filter does not mean an application is safe.
+If the application removes `../` only once, we can sometimes construct an input where removing the sequence exposes another traversal sequence.
 
-If the application removes `../` only once, an attacker may be able to construct input where removing the sequence exposes another traversal sequence. The main lesson is that we should analyze not only whether a filter exists, but also how the input is transformed and validated throughout the processing pipeline.
-
----
-
-## Quick Comparison
+The main thing to look for is **how the application processes and transforms the input**, not just whether it has a filter.
 
 ```text
 Normal payload
@@ -146,18 +156,12 @@ Normal payload
         ↓
      BLOCKED
 
-Bypass payload
+Bypass
 ....//....//....//etc/passwd
         ↓
-Filter removes ../ once
+Filter removes ../
         ↓
 ../../../etc/passwd
         ↓
 /etc/passwd
 ```
-
----
-
-## Final Takeaway
-
-Security filters must be reliable and carefully designed. A one-pass sanitization routine may still leave exploitable paths behind. In path traversal defenses, the safest approach is to validate the final resolved path and avoid relying on simplistic pattern stripping alone.
