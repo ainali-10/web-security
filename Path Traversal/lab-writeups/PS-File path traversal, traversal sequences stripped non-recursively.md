@@ -3,14 +3,17 @@
 ## What I observed
 
 We have the same type of shopping application where product images are loaded using a filename parameter.
+  <img width="1766" height="884" alt="2026-10-05_00-41" src="https://github.com/user-attachments/assets/7bfb537d-9291-48ef-a18f-93a151ed3717" />
+
+
+
 
 I opened one of the product images in a new tab and saw the filename in the URL:
 
 ```text
 /image?filename=72.png
 ```
-
-**[Screenshot 1: Original image request showing `filename=72.png`]**
+<img width="1840" height="853" alt="2026-10-05_00-42" src="https://github.com/user-attachments/assets/62c9a4cc-d99a-4fef-b081-2fd23931f845" />
 
 Since the filename is controlled through the URL, I changed:
 
@@ -26,7 +29,7 @@ to:
 
 The application returned a different image.
 
-**[Screenshot 2: Changed image request showing `filename=22.png` and the different image]**
+<img width="1358" height="820" alt="2026-10-05_00-43" src="https://github.com/user-attachments/assets/fa1212ab-0bf1-45ab-8003-3fd8fe303474" />
 
 So again, we know that the `filename` parameter is user controlled and is being used to decide which file the application loads.
 
@@ -62,7 +65,7 @@ So I used:
 ....//....//....//etc/passwd
 ```
 
-**[Screenshot 3: Caido request showing `filename=....//....//....//etc/passwd`]**
+<img width="1904" height="828" alt="2026-10-05_00-45" src="https://github.com/user-attachments/assets/df2eff9b-55db-41b7-84af-2fc9d88eb93c" />
 
 The idea is that the application removes the inner `../` pattern while processing the input.
 
@@ -98,7 +101,7 @@ The application then uses that path to access `/etc/passwd`.
 
 The server returned the contents of `/etc/passwd`.
 
-**[Screenshot 4: Caido response showing the `/etc/passwd` contents]**
+<img width="1900" height="772" alt="2026-10-05_00-46" src="https://github.com/user-attachments/assets/e4434586-d254-493e-92dc-b8b508a6da4a" />
 
 This confirms that the filter could be bypassed even though it was removing the normal `../` traversal sequence.
 
