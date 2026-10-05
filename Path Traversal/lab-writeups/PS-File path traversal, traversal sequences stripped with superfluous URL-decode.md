@@ -1,10 +1,12 @@
-Yes use **41.png → 20.png** for this lab. Everything else remains unchanged.
-
 # File Path Traversal, Traversal Sequences Stripped with URL-Decode
 
 ## What I observed
 
 We have a shopping application that loads product images using a filename parameter.
+ <img width="1728" height="912" alt="2026-10-05_23-00" src="https://github.com/user-attachments/assets/1bac58c9-ce32-4c90-98ce-f43b54b52aa2" />
+
+
+
 
 I opened a product image in a tab and saw the filename in the URL:
 
@@ -14,7 +16,7 @@ I opened a product image in a tab and saw the filename in the URL:
 
 ```
 
-**[Screenshot 1: image request showing `filename=41.png`]**
+<img width="1540" height="883" alt="2026-10-05_23-07" src="https://github.com/user-attachments/assets/77fd2a55-8d9b-4c4f-95db-3765ce0ace29" />
 
 Because the filename is set via the URL I changed:
 
@@ -34,7 +36,7 @@ to:
 
 The application returned a different image.
 
-**[Screenshot 2: Changed image request showing `filename=20.png`. The different image]**
+<img width="1600" height="867" alt="2026-10-05_23-09_1" src="https://github.com/user-attachments/assets/68367cdf-d3d3-48b8-8673-ae1a75fa2adc" />
 
 Once more we know that the `filename` parameter is controlled by the user and decides which file the application loads.
 
@@ -82,7 +84,7 @@ I used a **double URL-encoded** version:
 
 ```
 
-**[Screenshot 3: Caido request showing `filename=..%252f..%252f..%252fetc/passwd`]**
+<img width="1827" height="875" alt="2026-10-05_23-09" src="https://github.com/user-attachments/assets/50a309f2-2f74-4187-bd38-9d69f2d3ba91" />
 
 The important part here is `%252f`.
 
@@ -142,7 +144,7 @@ even though the filter did not initially see the traversal sequence.
 
 The application accepted the payload. Returned the contents of `/etc/passwd`.
 
-**[Screenshot 4: Caido response showing the `/etc/passwd` contents]**
+<img width="1895" height="874" alt="2026-10-05_23-10" src="https://github.com/user-attachments/assets/420d53f2-d031-49b6-b1a1-40e444f7c621" />
 
 This confirms that the URL-encoding bypass worked and the Path Traversal vulnerability could be exploited.
 
