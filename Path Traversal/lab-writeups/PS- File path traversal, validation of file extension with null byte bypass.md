@@ -11,8 +11,7 @@ I opened one of the product images in a tab and saw:
 /image?filename=53.jpg
 
 ```
-
-**[Screenshot 1: Original image request showing `filename=53.jpg`]**
+<img width="1665" height="890" alt="2026-10-05_23-44" src="https://github.com/user-attachments/assets/f1eb1170-8dc7-46cd-a9f1-e2b9d5ecf50e" />
 
 Since the filename is controlled through the URL I changed:
 
@@ -31,8 +30,7 @@ to:
 ```
 
 The application returned an image.
-
-**[Screenshot 2: Changed image request showing `filename=31.jpg` and the different image]**
+<img width="1549" height="859" alt="2026-10-05_23-44_1" src="https://github.com/user-attachments/assets/f532ed76-aea7-4d9b-80d2-e48d185276da" />
 
 So the `filename` parameter is user controlled. Is being used to decide which file the application loads.
 
@@ -77,8 +75,7 @@ I intercepted the request in Caido. Modified the `filename` parameter to:
 ../../../etc/passwd%00.png
 
 ```
-
-**[Screenshot 3: Caido request showing `filename=../../../etc/passwd%00.png`]**
+<img width="1867" height="878" alt="2026-10-05_23-45" src="https://github.com/user-attachments/assets/615efc77-fa79-4b58-a6c8-ce2f9811f630" />
 
 The important part here is:
 
@@ -124,7 +121,7 @@ of the `.png` part after the null byte.
 
 The application returned the contents of `/etc/passwd`.
 
-**[Screenshot 4: Caido response showing the `/etc/passwd` contents]**
+<img width="1918" height="863" alt="2026-10-05_23-45_1" src="https://github.com/user-attachments/assets/59707af9-f319-4590-902a-8a9d0a7281d3" />
 
 This confirms that the extension validation was bypassed and the Path Traversal vulnerability could be exploited.
 
