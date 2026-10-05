@@ -12,7 +12,7 @@ https://web-security-academy.net/image?filename=/var/www/images/32.jpg
 
 ```
 
-**[Screenshot 1: Original image request showing `/var/www/images/32.jpg`]**
+<img width="1739" height="914" alt="2026-10-05_23-28" src="https://github.com/user-attachments/assets/3fd10a30-eab2-45dd-881a-7010dbf50c1b" />
 
 This is interesting because now we can see the directory where the application expects the images to be located:
 
@@ -40,7 +40,7 @@ to:
 
 The application returned an image.
 
-**[Screenshot 2: Changed image request showing `/var/www/images/15.jpg` and the different image]**
+<img width="1731" height="874" alt="2026-10-05_23-29" src="https://github.com/user-attachments/assets/d1ce8e1c-ade9-4d45-a24a-b3faa5598047" />
 
 So the entire file path is being passed through the `filename` parameter. Is controlled by us.
 
@@ -75,8 +75,7 @@ I changed the `filename` parameter to:
 /var/www/images/../../../etc/passwd
 
 ```
-
-**[Screenshot 3: Caido request showing `filename=/var/www/images/../../../etc/passwd`]**
+<img width="1891" height="889" alt="2026-10-05_23-33" src="https://github.com/user-attachments/assets/6f6a4f12-ceb6-4b68-82c9-9235e8947832" />
 
 The path still starts with:
 
@@ -138,7 +137,7 @@ So although the application sees a path beginning with the expected directory th
 
 The application returned the contents of `/etc/passwd`.
 
-**[Screenshot 4: Caido response showing the `/etc/passwd` contents]**
+<img width="1912" height="871" alt="2026-10-05_23-34" src="https://github.com/user-attachments/assets/ba74c0a1-83f4-48f0-a9f0-b6fd9c879e7a" />
 
 This confirms that the validation could be bypassed by placing the traversal sequence **after the trusted path**.
 
